@@ -33,7 +33,7 @@ public class RasterFileHandlerTest {
 	    String expectedName = "03-112.TIF";
 	    String expectedFormat = "TIF";
 	    String expectedDriver = "GTiff";
-	    int[] expectedDimension = { 3000, 2000 };
+	    int[] expectedDimension = { 60, 40 };
 	    double[] expectedUpperLeftCoordinates = { 534000.0, 63999.0 };
 	    double[] expectedLowerLeftCoordinates = { 534000.0, 59999.0 };
 	    double[] expectedUpperRightCoordinates = { 540000.0, 63999.0 };
