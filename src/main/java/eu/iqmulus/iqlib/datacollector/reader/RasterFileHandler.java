@@ -22,7 +22,7 @@ import eu.iqmulus.iqlib.datacollector.models.RasterFile;
 
 public class RasterFileHandler implements InputHandler {
 	
-	final static Logger logger = Logger.getLogger(RasterFileHandler.class);
+	final static Logger LOG = Logger.getLogger(RasterFileHandler.class);
 	
 	ArrayList<RasterFile> rasterFiles;
 	RasterParameters rasterParameters;
@@ -90,8 +90,7 @@ public class RasterFileHandler implements InputHandler {
 				// Parsing GDAL specific parameters
 				parseGdalParameters(f, rasterFile);
 			} catch(NullPointerException ex) {
-				logger.debug("Invalid raster file: " + f.getPath(), ex);
-				
+				LOG.debug("Invalid raster file: " + f.getPath(), ex);
 				// Error.json file kibovitese ujabb hibas rekordal
 			}
 		}
