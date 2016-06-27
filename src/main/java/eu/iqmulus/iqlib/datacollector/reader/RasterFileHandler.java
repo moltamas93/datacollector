@@ -27,6 +27,25 @@ public class RasterFileHandler implements InputHandler {
 	ArrayList<RasterFile> rasterFiles;
 	RasterParameters rasterParameters;
 	
+	public void collect(File file, File withConfig) {
+		rasterFiles = new ArrayList<RasterFile>();
+		rasterParameters = new ConfigurationReader().getRasterParametersByConfig(withConfig);
+		ArrayList<File> files = new FileCollector(file, rasterParameters.getExtensions()).getFiles();
+		for (File f : files) {
+			RasterFile rasterFile = new RasterFile();
+			rasterFile.setName(f.getName());
+			rasterFile.setUri(f.getPath().replace(file.getPath(), ""));
+			rasterFile.setFormat(rasterFile.getName().substring(rasterFile.getName().lastIndexOf('.')+1));
+			try{
+				// Parsing GDAL specific parameters
+				parseGdalParameters(f, rasterFile);
+			} catch(NullPointerException ex) {
+				LOG.debug("Invalid raster file: " + f.getPath(), ex);
+				// Error.json file kibovitese ujabb hibas rekordal
+			}
+		}
+	}
+	
 	/**
 	 * Reading properties of the raster file into RasterFile object.
 	 * 
@@ -75,25 +94,6 @@ public class RasterFileHandler implements InputHandler {
 		dfGeoY = adfGeoTransform[3] + adfGeoTransform[4] * x
 				+ adfGeoTransform[5] * y;
 		return new double[] { dfGeoX, dfGeoY };
-	}
-	
-	public void collect(File file, File withConfig) {
-		rasterFiles = new ArrayList<RasterFile>();
-		rasterParameters = new ConfigurationReader().getRasterParametersByConfig(withConfig);
-		ArrayList<File> files = new FileCollector(file, rasterParameters.getExtensions()).getFiles();
-		for (File f : files) {
-			RasterFile rasterFile = new RasterFile();
-			rasterFile.setName(f.getName());
-			rasterFile.setUri(f.getPath().replace(file.getPath(), ""));
-			rasterFile.setFormat(rasterFile.getName().substring(rasterFile.getName().lastIndexOf('.')+1));
-			try{
-				// Parsing GDAL specific parameters
-				parseGdalParameters(f, rasterFile);
-			} catch(NullPointerException ex) {
-				LOG.debug("Invalid raster file: " + f.getPath(), ex);
-				// Error.json file kibovitese ujabb hibas rekordal
-			}
-		}
 	}
 	
 	public ArrayList<RasterFile> getRasterFiles() {

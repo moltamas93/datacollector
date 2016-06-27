@@ -1,7 +1,6 @@
 package eu.iqmulus.iqlib.datacollector;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
@@ -40,6 +39,30 @@ public class CliValidator {
 			LOG.debug("The system cannot find the file: " + file.getAbsolutePath());
 			System.exit(0);
 		} 
+	}
+
+	public File getConfigFile() {
+		return configFile;
+	}
+
+	public void setConfigFile(File configFile) {
+		this.configFile = configFile;
+	}
+
+	public File getInputFile() {
+		return inputFile;
+	}
+
+	public void setInputFile(File inputFile) {
+		this.inputFile = inputFile;
+	}
+
+	public String getDataFileType() {
+		return dataFileType;
+	}
+
+	public void setDataFileType(String dataFileType) {
+		this.dataFileType = dataFileType;
 	}
 	
 }
