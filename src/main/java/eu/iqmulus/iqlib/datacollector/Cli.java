@@ -1,8 +1,8 @@
 package eu.iqmulus.iqlib.datacollector;
 
-import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -47,7 +47,7 @@ public class Cli {
 	}
 	
 	public void parse() {
-		CommandLineParser parser = new BasicParser();
+		CommandLineParser parser = new DefaultParser();
 		try {
 			this.cmd = parser.parse(options, args);
 		} catch (ParseException e) {

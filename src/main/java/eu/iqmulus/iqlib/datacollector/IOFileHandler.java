@@ -15,7 +15,7 @@ import eu.iqmulus.iqlib.datacollector.reader.RasterFileHandler;
 
 public class IOFileHandler {
 
-	final static Logger LOG = Logger.getLogger(App.class);
+	final static Logger LOG = Logger.getLogger(IOFileHandler.class);
 	File configFile;
 	File filesPath;
 	File outputPath;

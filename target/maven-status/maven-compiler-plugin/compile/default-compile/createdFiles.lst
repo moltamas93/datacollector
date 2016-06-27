@@ -6,4 +6,5 @@ eu\iqmulus\iqlib\datacollector\reader\RasterFileHandler.class
 eu\iqmulus\iqlib\datacollector\configurations\RasterParameters.class
 eu\iqmulus\iqlib\datacollector\IOFileHandler.class
 eu\iqmulus\iqlib\datacollector\App.class
+eu\iqmulus\iqlib\datacollector\CliValidator.class
 eu\iqmulus\iqlib\datacollector\reader\FileCollector.class

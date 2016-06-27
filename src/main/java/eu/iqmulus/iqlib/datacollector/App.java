@@ -7,6 +7,10 @@ public class App {
 				"-o", "d://file.json"};
 		Cli cli = new Cli(testArgs);
 		cli.parse();
+		
+		CliValidator cliValidator = new CliValidator(cli.getCmd());
+		cliValidator.validate();
+		
 		IOFileHandler handler = new IOFileHandler();
 		handler.parseFiles(cli.getCmd());
 		System.out.println("The program has been successful!");
