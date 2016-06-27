@@ -1,0 +1,9 @@
+eu\iqmulus\iqlib\datacollector\configurations\ConfigurationReader.class
+eu\iqmulus\iqlib\datacollector\models\InputHandler.class
+eu\iqmulus\iqlib\datacollector\models\RasterFile.class
+eu\iqmulus\iqlib\datacollector\Cli.class
+eu\iqmulus\iqlib\datacollector\reader\RasterFileHandler.class
+eu\iqmulus\iqlib\datacollector\configurations\RasterParameters.class
+eu\iqmulus\iqlib\datacollector\IOFileHandler.class
+eu\iqmulus\iqlib\datacollector\App.class
+eu\iqmulus\iqlib\datacollector\reader\FileCollector.class
