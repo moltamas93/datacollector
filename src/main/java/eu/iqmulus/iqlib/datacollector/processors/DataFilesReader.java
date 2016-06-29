@@ -2,7 +2,6 @@ package eu.iqmulus.iqlib.datacollector.processors;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -11,7 +10,7 @@ import eu.iqmulus.iqlib.datacollector.reader.RasterFileHandler;
 public class DataFilesReader {
 	
 	final static Logger LOG = Logger.getLogger(DataFilesReader.class);
-	Map<String, Object> dataFilesMap;
+	HashMap<String, Object> dataFilesMap;
 	
 	public DataFilesReader() {
 		this.dataFilesMap = new HashMap<String, Object>();
@@ -34,11 +33,11 @@ public class DataFilesReader {
 		dataFilesMap.put("files", rasterFileHandler.getRasterFiles());
 	}
 	
-	public Map<String, Object> getDataFilesMap() {
+	public HashMap<String, Object> getDataFilesMap() {
 		return dataFilesMap;
 	}
 	
-	public void setDataFilesMap(Map<String, Object> dataFilesMap) {
+	public void setDataFilesMap(HashMap<String, Object> dataFilesMap) {
 		this.dataFilesMap = dataFilesMap;
 	}
 	

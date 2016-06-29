@@ -2,6 +2,8 @@ package eu.iqmulus.iqlib.datacollector;
 
 import java.io.File;
 
+import eu.iqmulus.iqlib.datacollector.http.RestClient;
+import eu.iqmulus.iqlib.datacollector.processors.DataFilesLoader;
 import eu.iqmulus.iqlib.datacollector.processors.DataFilesReader;
 import eu.iqmulus.iqlib.datacollector.processors.DataFilesWriter;
 
@@ -26,6 +28,16 @@ public class App {
 		DataFilesWriter dataFilesWriter = new DataFilesWriter(dataFilesReader.getDataFilesMap());
 		dataFilesWriter.writeDataFilesToFile(new File(cli.getCmd().getOptionValue("o")));
 		
+		//Loader
+		RestClient restClient = new RestClient();
+		restClient.initHttpClientWithConfigFile(cliValidator.getConfigFile());
+		
+		String json = restClient.getSurveyAreaByIdAsJsonString(new Long(53));
+		System.out.println(json.equals(""));
+		
+		DataFilesLoader dataFilesLoader = new DataFilesLoader(restClient);	
+		dataFilesLoader.saveToDatabaseByConfig(dataFilesReader.getDataFilesMap(), cliValidator.getConfigFile());
+
 		System.out.println("The program has been successful!");
 	}
 

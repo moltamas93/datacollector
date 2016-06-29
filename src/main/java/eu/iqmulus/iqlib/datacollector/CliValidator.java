@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class CliValidator {
 
-	final static Logger LOG = Logger.getLogger(CliValidator.class);
+	private final static Logger LOG = Logger.getLogger(CliValidator.class);
 	File configFile;
 	File inputFile;
 	String dataFileType;

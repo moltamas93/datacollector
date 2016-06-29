@@ -19,7 +19,7 @@ public class RasterFileHandlerTest {
 	@Test
 	public void testGetRasterFilesCount() {
 	    ClassLoader classLoader = getClass().getClassLoader();
-	    File files = new File(classLoader.getResource("rasters").getFile());
+	    File files = new File(classLoader.getResource("files/rasters").getFile());
 	    File config = new File(classLoader.getResource("fileReader.cfg").getFile());
 	    ArrayList<RasterFile> rasterFiles = null;
     	rasterFileHandler = new RasterFileHandler();
@@ -39,7 +39,7 @@ public class RasterFileHandlerTest {
 	    double[] expectedUpperRightCoordinates = { 540000.0, 63999.0 };
 	    double[] expectedLowerRightCoordinates = { 540000.0, 59999.0 };
 	    ClassLoader classLoader = getClass().getClassLoader();
-	    File files = new File(classLoader.getResource("rasters/03-112.TIF").getFile());
+	    File files = new File(classLoader.getResource("files/rasters/03-112.TIF").getFile());
 	    File config = new File(classLoader.getResource("fileReader.cfg").getFile());
     	rasterFileHandler = new RasterFileHandler();
     	rasterFileHandler.collect(files, config);

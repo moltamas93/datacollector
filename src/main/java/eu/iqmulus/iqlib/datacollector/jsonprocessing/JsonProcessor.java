@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,28 @@ public class JsonProcessor {
 			LOG.error(ex);
 		}
 		return jsonNode;
+	}
+	
+	public <T> String objectToJsonString(T object) {
+		String json = null;
+		try {
+			json = mapper.writeValueAsString(object);	
+		} catch (JsonProcessingException ex) {
+			LOG.error(ex);
+		}
+		return json;
+	}
+	
+	public JsonNode jsonStringToJsonNode(String fromJson) {
+		JsonNode json = null;
+		try {
+			json = mapper.readTree(fromJson);
+		} catch (JsonProcessingException ex) {
+			LOG.debug("JSON I/O problems: " + fromJson, ex);
+		} catch (IOException ex) {
+			LOG.debug("JSON I/O problems: " + fromJson, ex);
+		}
+		return json;
 	}
 	
 }
