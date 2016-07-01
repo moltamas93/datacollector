@@ -14,23 +14,6 @@ public class DataCatalogModelBuilder {
 	public DataCatalogModelBuilder() {
 		
 	}
-
-	public HashMap<String, Object> surveyAreaBuilderFromConfigJsonNode(JsonNode configJsonNode) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("name", configJsonNode.get("surveyarea").get("name"));
-		map.put("description", configJsonNode.get("surveyarea").get("description"));
-		return map;
-	}
-	
-	public HashMap<String, Object> datasetBuilderFromConfigJsonNode(JsonNode configJsonNode) {
-		HashMap<String, Object> datasetMap = new HashMap<>();
-		datasetMap.put("name", configJsonNode.get("dataset").get("name"));
-		datasetMap.put("isNonOverLapping", configJsonNode.get("dataset").get("isNonOverLapping"));
-		datasetMap.put("source", configJsonNode.get("dataset").get("purpose"));
-		datasetMap.put("owner", configJsonNode.get("dataset").get("owner"));
-		datasetMap.put("purpose", configJsonNode.get("dataset").get("purpose"));
-		return datasetMap;
-	}
 	
 	public List<HashMap<String, Object>> dataFilesBuilderFromMap(HashMap<String, Object> map) {
 		JsonProcessor jsonProcessor = new JsonProcessor();
