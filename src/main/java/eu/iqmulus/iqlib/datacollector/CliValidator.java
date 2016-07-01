@@ -1,7 +1,6 @@
 package eu.iqmulus.iqlib.datacollector;
 
 import java.io.File;
-import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.log4j.Logger;
@@ -9,34 +8,25 @@ import org.apache.log4j.Logger;
 public class CliValidator {
 
 	private final static Logger LOG = Logger.getLogger(CliValidator.class);
-	File configFile;
-	File inputFile;
-	String dataFileType;
+	private File configFile;
+	private File inputFile;
+	private File outputFile;
 	
 	public CliValidator(CommandLine cli) {
 		this.configFile = new File(cli.getOptionValue("c"));
 		this.inputFile = new File(cli.getOptionValue("f"));
-		this.dataFileType = cli.getOptionValue("t");
+		this.outputFile = new File(cli.getOptionValue("o"));
 	}
 
 	public void validate() {
 		checkFileExists(configFile);
 		checkFileExists(inputFile);
-		checkDataFileType(dataFileType);
-	}
-	
-	private void checkDataFileType(String type) {
-		String[] validTypes = new String[] {"raster", "pointcloud", "vector"};
-		if ( !(Arrays.asList(validTypes).contains(type)) ) {
-			LOG.debug("The follow type is invalid: " + type);
-			System.out.println("Valid types: " + "raster" + " pointcloud " + "vector" );
-			System.exit(0);	
-		}
+		checkFileExists(outputFile.getParentFile());
 	}
 
 	private void checkFileExists(File file) {
 		if (!file.exists()) {
-			LOG.debug("The system cannot find the file: " + file.getAbsolutePath());
+			LOG.error("The system cannot find the file: " + file.getAbsolutePath());
 			System.exit(0);
 		} 
 	}
@@ -57,12 +47,12 @@ public class CliValidator {
 		this.inputFile = inputFile;
 	}
 
-	public String getDataFileType() {
-		return dataFileType;
+	public File getOutputFile() {
+		return outputFile;
 	}
 
-	public void setDataFileType(String dataFileType) {
-		this.dataFileType = dataFileType;
+	public void setOutputFile(File outputFile) {
+		this.outputFile = outputFile;
 	}
 	
 }

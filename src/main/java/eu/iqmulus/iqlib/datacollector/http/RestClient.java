@@ -30,102 +30,45 @@ public class RestClient {
 		client = HttpClientBuilder.create().build();
 	}
 	
-	public String saveSurveyAreaAndGetNewSurveyAreaAsJsonString(String surveyAreaAsJsonString) {
-		String url = this.url + "/datamodel/surveyarea";
+	public String postAndGetResponseAsString(String requestPath, String bodyAsString) {
+		String url = this.url + requestPath ;
 		HttpPost httpPost = new HttpPost(url);
 		
-		StringEntity params = new StringEntity(surveyAreaAsJsonString, "UTF-8");
+		StringEntity params = new StringEntity(bodyAsString, "UTF-8");
 	    httpPost.setEntity(params);
 	    httpPost.setHeader("Accept", "application/json");
 	    httpPost.setHeader("Content-type", "application/json");
-	    HttpResponse response = null;
+	    HttpResponse httpResponse = null;
 		try {
-			response = client.execute(httpPost);
-			System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+			httpResponse = client.execute(httpPost);
+			System.out.println("Response Code : " + httpResponse.getStatusLine().getStatusCode());
 		} catch(ClientProtocolException ex) {
 			LOG.error(ex);
 		} catch(IOException ex) {
 			LOG.error(ex);
 		}
-		String surveyAreaJsonAsString = getResponseBodyAsString(response);
-		return surveyAreaJsonAsString;
+		return getResponseBodyAsString(httpResponse);
 	}
 	
-	public String saveDatasetAndGetNewDatasetAsJsonString(String datasetAsJsonString, Long surveyAreaId) {
-		String url = this.url + "/datamodel/dataset?"+"survey=" + surveyAreaId;
-		HttpPost httpPost = new HttpPost(url);
-		
-		StringEntity params = new StringEntity(datasetAsJsonString, "UTF-8");
-	    httpPost.setEntity(params);
-	    httpPost.setHeader("Accept", "application/json");
-	    httpPost.setHeader("Content-type", "application/json");
-	    HttpResponse response = null;
-		try {
-			response = client.execute(httpPost);
-			System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		} catch(ClientProtocolException ex) {
-			LOG.error(ex);
-		} catch(IOException ex) {
-			LOG.error(ex);
-		}
-		String datasetJsonAsString = getResponseBodyAsString(response);
-		return datasetJsonAsString;
-	}
-	
-	public String saveDataFilesAndGetNewDataFilesAsJsonString(String dataFilesAsJsonString, Long datasetId) {
-		String url = this.url + "/datamodel/datafiles?"+"dataset=" + datasetId;
-		HttpPost httpPost = new HttpPost(url);
-		
-		StringEntity params = new StringEntity(dataFilesAsJsonString, "UTF-8");
-	    httpPost.setEntity(params);
-	    httpPost.setHeader("Accept", "application/json");
-	    httpPost.setHeader("Content-type", "application/json");
-	    HttpResponse response = null;
-		try {
-			response = client.execute(httpPost);
-			System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-		} catch(ClientProtocolException ex) {
-			LOG.error(ex);
-		} catch(IOException ex) {
-			LOG.error(ex);
-		}
-		String dataFilesJsonAsString = getResponseBodyAsString(response);
-		return dataFilesJsonAsString;
-	}
-	
-	public String getSurveyAreaByIdAsJsonString(Long id) {
-		String url = this.url + "/surveyarea/" + id;
+	public String get(String requestPath) {
+		String url = this.url + requestPath;
 		HttpGet httpGet = new HttpGet(url);
-		HttpResponse response = null;
+		HttpResponse httpResponse = null;
 		try {
-			 response = client.execute(httpGet);
+			 httpResponse = client.execute(httpGet);
 		} catch(ClientProtocolException ex) {
 			LOG.error(ex);
 		} catch(IOException ex) {
 			LOG.error(ex);
 		}
-		return getResponseBodyAsString(response);
+		return getResponseBodyAsString(httpResponse);
 	}
 	
-	public String getDatasetByIdAsJsonString(Long id) {
-		String url = this.url + "/dataset/" + id;
-		HttpGet httpGet = new HttpGet(url);
-		HttpResponse response = null;
-		try {
-			 response = client.execute(httpGet);
-		} catch(ClientProtocolException ex) {
-			LOG.error(ex);
-		} catch(IOException ex) {
-			LOG.error(ex);
-		}
-		return getResponseBodyAsString(response);
-	}
-	
-	public String getResponseBodyAsString(HttpResponse fromResponse) {
+	private String getResponseBodyAsString(HttpResponse fromHttpResponse) {
 		StringBuffer response = null;
 		try {
 			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(fromResponse.getEntity().getContent()));
+			        new InputStreamReader(fromHttpResponse.getEntity().getContent()));
 			String inputLine;
 			 response = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -147,7 +90,7 @@ public class RestClient {
 		try {
 			HttpResponse response = client.execute(request);
 		} catch (UnknownHostException ex) {
-			LOG.error(ex);
+			LOG.error("The host is unkonwn: " + configJsonNode.get("host").asText() ,ex);
 			System.exit(0);
 		} catch (ClientProtocolException ex) {
 			LOG.error(ex);

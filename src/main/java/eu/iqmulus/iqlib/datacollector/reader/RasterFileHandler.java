@@ -40,8 +40,7 @@ public class RasterFileHandler implements InputHandler {
 				// Parsing GDAL specific parameters
 				parseGdalParameters(f, rasterFile);
 			} catch(NullPointerException ex) {
-				LOG.debug("Invalid raster file: " + f.getPath(), ex);
-				// Error.json file kibovitese ujabb hibas rekordal
+				LOG.error("Invalid raster file: " + f.getPath(), ex);
 			}
 		}
 	}

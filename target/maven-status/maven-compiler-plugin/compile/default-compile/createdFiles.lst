@@ -6,9 +6,13 @@ eu\iqmulus\iqlib\datacollector\processors\DataFilesReader.class
 eu\iqmulus\iqlib\datacollector\reader\RasterFileHandler.class
 eu\iqmulus\iqlib\datacollector\configurations\RasterParameters.class
 eu\iqmulus\iqlib\datacollector\http\RestClient.class
+eu\iqmulus\iqlib\datacollector\processors\DataFileType.class
 eu\iqmulus\iqlib\datacollector\CliValidator.class
+eu\iqmulus\iqlib\datacollector\configmodel\SurveyAreaConfiguration.class
 eu\iqmulus\iqlib\datacollector\modelbuilder\DataCatalogModelBuilder.class
+eu\iqmulus\iqlib\datacollector\processors\DataFilesReader$1.class
 eu\iqmulus\iqlib\datacollector\Cli.class
+eu\iqmulus\iqlib\datacollector\configmodel\DatasetConfiguration.class
 eu\iqmulus\iqlib\datacollector\processors\DataFilesWriter.class
 eu\iqmulus\iqlib\datacollector\App.class
 eu\iqmulus\iqlib\datacollector\processors\DataFilesLoader.class

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonProcessor {
 
-	final static Logger LOG = Logger.getLogger(JsonProcessor.class);
+	private final static Logger LOG = Logger.getLogger(JsonProcessor.class);
 	ObjectMapper mapper;
 	
 	public JsonProcessor() {
@@ -49,9 +49,9 @@ public class JsonProcessor {
 		try {
 			json = mapper.readTree(fromJson);
 		} catch (JsonProcessingException ex) {
-			LOG.debug("JSON I/O problems: " + fromJson, ex);
+			LOG.error("JSON I/O problems: " + fromJson, ex);
 		} catch (IOException ex) {
-			LOG.debug("JSON I/O problems: " + fromJson, ex);
+			LOG.error("JSON I/O problems: " + fromJson, ex);
 		}
 		return json;
 	}

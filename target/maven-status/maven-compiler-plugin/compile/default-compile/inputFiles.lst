@@ -12,10 +12,13 @@ d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\configu
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\models\RasterFile.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\models\VectorFile.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\App.java
+d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\configmodel\DatasetConfiguration.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\processors\DataFilesLoader.java
+d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\configmodel\SurveyAreaConfiguration.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\http\RestClient.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\configurations\ConfigurationReader.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\modelbuilder\DataCatalogModelBuilder.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\models\PoincloudFile.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\jsonprocessing\JsonProcessor.java
 d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\configurations\RasterParameters.java
+d:\Munka\Java\datacollector\src\main\java\eu\iqmulus\iqlib\datacollector\processors\DataFileType.java

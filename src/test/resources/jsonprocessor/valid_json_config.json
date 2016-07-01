@@ -1,0 +1,23 @@
+{	
+	"host": "localhost",
+	"port": 23700,
+	"surveyarea": {
+		"id": 10, 
+		"name": "Budapest",
+		"description": "Valami valami"
+	},
+	"dataset": {
+		"id": 11,
+		"name": "dataset_name",
+		"isNonOverLapping": false,
+		"source": "asdf",
+		"purpose": "asdf",
+		"owner": "asd"
+	},
+	"datafiles_parameters": {
+		"extensions": ["tif", "TIF", "tiff", "TIFF", "DMG", "dmg", "jpg"],
+		"keywords": ["SENTINEL", "SPOT5"],
+		"sampling_date": "2016-04-01",
+		"sensor_type": "BLA BLA"
+	}
+}

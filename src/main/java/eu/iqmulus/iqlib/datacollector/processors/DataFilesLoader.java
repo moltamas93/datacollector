@@ -4,76 +4,94 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import eu.iqmulus.iqlib.datacollector.configmodel.DatasetConfiguration;
+import eu.iqmulus.iqlib.datacollector.configmodel.SurveyAreaConfiguration;
 import eu.iqmulus.iqlib.datacollector.http.RestClient;
 import eu.iqmulus.iqlib.datacollector.jsonprocessing.JsonProcessor;
 import eu.iqmulus.iqlib.datacollector.modelbuilder.DataCatalogModelBuilder;
 
 public class DataFilesLoader {
-	
+
+	private final static Logger LOG = Logger.getLogger(DataFilesLoader.class);
 	private RestClient restClient;
+	private SurveyAreaConfiguration surveyAreaConfiguration;
+	private DatasetConfiguration datasetConfiguration;
 	
 	public DataFilesLoader(RestClient restClient) {
 		this.restClient = restClient;
+	}
+	
+	private void initConfigurationModelsByConfigJsonNode(JsonNode configJsonNode) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			this.surveyAreaConfiguration = mapper.convertValue(configJsonNode.get("surveyarea"), SurveyAreaConfiguration.class);
+			this.datasetConfiguration = mapper.convertValue(configJsonNode.get("dataset"), DatasetConfiguration.class);
+		} catch(IllegalArgumentException ex) {
+			LOG.error(ex, ex);
+			System.exit(0);
+		}
 	}
 	
 	public void saveToDatabaseByConfig(HashMap<String, Object> dataFilesMap, File configFile) {
 		JsonProcessor jsonProcessor = new JsonProcessor();
 		JsonNode configJsonNode = jsonProcessor.jsonFileToJsonNode(configFile);
 		
+		initConfigurationModelsByConfigJsonNode(configJsonNode);
+		
 		DataCatalogModelBuilder dataCatalogModelBuilder = new DataCatalogModelBuilder();
 		List<HashMap<String, Object>> dataFilesListMap = dataCatalogModelBuilder.dataFilesBuilderFromMap(dataFilesMap);
-		String dataFilesListAsJsonString = jsonProcessor.objectToJsonString(dataFilesListMap);
-		System.out.println(dataFilesListAsJsonString);
 		
-		if (configJsonNode.get("surveyarea").get("id").asLong() < 1) {
-			//SurveyArea save
-			HashMap<String, Object> surveyAreaMap = dataCatalogModelBuilder.surveyAreaBuilderFromConfigJsonNode(configJsonNode);
-			String surveyAreaAsJsonString = jsonProcessor.objectToJsonString(surveyAreaMap);
-			String newSurveyAreaAsJsonString = restClient.saveSurveyAreaAndGetNewSurveyAreaAsJsonString(surveyAreaAsJsonString);
+		String dataFilesListAsJsonString = jsonProcessor.objectToJsonString(dataFilesListMap);
+		String surveyAreaAsJsonString = jsonProcessor.objectToJsonString(surveyAreaConfiguration);
+		String datasetAsJsonString = jsonProcessor.objectToJsonString(datasetConfiguration);
+
+		Long datasetId = null;
+		
+		if (surveyAreaConfiguration.getId() < 1) {
+			//Post and Save New SurveyArea
+			String newSurveyAreaAsJsonString = restClient
+					.postAndGetResponseAsString("/datamodel/surveyarea", surveyAreaAsJsonString);
 			
-			//Dataset save
-			JsonNode newSurveyAreaJsonNode = jsonProcessor.jsonStringToJsonNode(newSurveyAreaAsJsonString);
-			HashMap<String, Object> datasetMap = dataCatalogModelBuilder.datasetBuilderFromConfigJsonNode(configJsonNode);
-			String datasetAsJsonString = jsonProcessor.objectToJsonString(datasetMap);
-			String newDatasetAsJsonString = restClient.saveDatasetAndGetNewDatasetAsJsonString(datasetAsJsonString, newSurveyAreaJsonNode.get("id").asLong());
+			//Post and Save New Dataset
+			Long newSurveyAreaId = jsonProcessor.jsonStringToJsonNode(newSurveyAreaAsJsonString).get("id").asLong();
+			System.out.println(newSurveyAreaId);
+			String newDatasetAsJsonString = restClient
+					.postAndGetResponseAsString("/datamodel/dataset/" + newSurveyAreaId, datasetAsJsonString);
 			
-			//DataFiles save
-			JsonNode newDatasetJsonNode = jsonProcessor.jsonStringToJsonNode(newDatasetAsJsonString);
-			String newDataFilesAsJsonString = restClient
-					.saveDataFilesAndGetNewDataFilesAsJsonString(dataFilesListAsJsonString, newDatasetJsonNode.get("id").asLong());
-			System.out.println(newDataFilesAsJsonString);
+			
+			//New DatasetId
+			datasetId = jsonProcessor.jsonStringToJsonNode(newDatasetAsJsonString).get("id").asLong();
 		} else {
-			String surveyAreaAsJsonString = restClient.getSurveyAreaByIdAsJsonString(configJsonNode.get("surveyarea").get("id").asLong());
-			if (surveyAreaAsJsonString.equals("")) {
+			//Get exists SurveyArea
+			String getSurveyAreaAsJsonString = restClient.get("/datamodel/surveyarea/" + surveyAreaConfiguration.getId());
+			if (getSurveyAreaAsJsonString.equals("")) {
 				System.exit(0);
 			}
-			if (configJsonNode.get("dataset").get("id").asLong() < 1) {
-				//New Dataset
-				HashMap<String, Object> datasetMap = dataCatalogModelBuilder.datasetBuilderFromConfigJsonNode(configJsonNode);
-				String datasetAsJsonString = jsonProcessor.objectToJsonString(datasetMap);
-				String newDatasetAsJsonString = restClient.saveDatasetAndGetNewDatasetAsJsonString(datasetAsJsonString, 
-						configJsonNode.get("surveyarea").get("id").asLong());
-				//New DataFiles
-				JsonNode newDatasetJsonNode = jsonProcessor.jsonStringToJsonNode(newDatasetAsJsonString);
-				String newDataFilesAsJsonString = restClient
-						.saveDataFilesAndGetNewDataFilesAsJsonString(dataFilesListAsJsonString, newDatasetJsonNode.get("id").asLong());
+			
+			if (datasetConfiguration.getId() < 1) {
+				//Post and Save New Dataset
+				String newDatasetAsJsonString = restClient
+						.postAndGetResponseAsString("/datamodel/dataset/" + surveyAreaConfiguration.getId(), datasetAsJsonString);
+				//New DatasetId
+				datasetId = jsonProcessor.jsonStringToJsonNode(newDatasetAsJsonString).get("id").asLong();
+				
 			} else {
-				String datasetAsJsonString = restClient.getSurveyAreaByIdAsJsonString(configJsonNode.get("dataset").get("id").asLong());
-				if (surveyAreaAsJsonString.equals("")) {
+				//Get exists SurveyArea
+				String getDatasetAsJsonString = restClient.get("/datamodel/dataset/" + datasetConfiguration.getId());
+				if (getDatasetAsJsonString.equals("")) {
 					System.exit(0);
 				}
-				String newDataFilesAsJsonString = restClient
-						.saveDataFilesAndGetNewDataFilesAsJsonString(dataFilesListAsJsonString, configJsonNode.get("dataset").get("id").asLong());
+				datasetId = datasetConfiguration.getId();
 			}
-			
 		}
-	}
-	
-	private void saveDatasetByConfigJsonNode(JsonNode configJsonNode, Long surveyAreaId) {
-		JsonProcessor jsonProcessor = new JsonProcessor();
-		DataCatalogModelBuilder dataCatalogModelBuilder = new DataCatalogModelBuilder();
+		
+		//Post and Save Datafiles
+		restClient.postAndGetResponseAsString("/datamodel/datafiles/" + datasetId, dataFilesListAsJsonString);
 	}
 	
 }

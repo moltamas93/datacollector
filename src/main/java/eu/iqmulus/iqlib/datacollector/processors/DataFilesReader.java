@@ -3,27 +3,40 @@ package eu.iqmulus.iqlib.datacollector.processors;
 import java.io.File;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
-
 import eu.iqmulus.iqlib.datacollector.reader.RasterFileHandler;
 
 public class DataFilesReader {
 	
-	final static Logger LOG = Logger.getLogger(DataFilesReader.class);
-	HashMap<String, Object> dataFilesMap;
+	private HashMap<String, Object> dataFilesMap;
+	
+	private File inputFile;
+	private File configurationFile;
+	
 	
 	public DataFilesReader() {
 		this.dataFilesMap = new HashMap<String, Object>();
 	}
 	
-	public void collectDataFiles(File fromInputFile, File configFile, String dataFileType) {
-		if (dataFileType.equals("raster")) {
-			collectRasterDataFiles(fromInputFile, configFile);
-		} else if (dataFileType.equals("pointcloud")) {
-			//empty
-		} else if (dataFileType.equals("vector")) {
-			//empty
-		}
+	public void collectDataFiles(String fromInputFilePath, String configurationFilePath, DataFileType dataFileType) {
+		inputFile = new File(fromInputFilePath);
+		configurationFile = new File(configurationFilePath);
+
+        switch (dataFileType) {
+            case RASTER:
+            	System.out.println("RASTER");
+    			collectRasterDataFiles(inputFile, configurationFile);
+                break;
+
+            case VECTOR:
+				//empty
+                break;
+
+            case POINTCLOUD:
+    			//empty
+                break;
+            default:
+                break;
+        }
 	}
 
 	private void collectRasterDataFiles(File fromInputFile, File configFile) {

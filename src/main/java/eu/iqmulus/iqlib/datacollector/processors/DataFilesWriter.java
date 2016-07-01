@@ -10,8 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DataFilesWriter {
 
-	final static Logger LOG = Logger.getLogger(DataFilesWriter.class);
-	Map<String, Object> dataFilesMap;
+	private final static Logger LOG = Logger.getLogger(DataFilesWriter.class);
+	private Map<String, Object> dataFilesMap;
 	
 	public DataFilesWriter(Map<String, Object> dataFilesMap) {
 		this.dataFilesMap = dataFilesMap;
@@ -22,9 +22,8 @@ public class DataFilesWriter {
 		try {
 			mapper.writeValue(outputJsonFile, dataFilesMap);
 		} catch(IOException ex) {
-			LOG.debug(ex);
+			LOG.error(ex);
 		}
-		
 	}
 
 	public Map<String, Object> getDataFilesMap() {
